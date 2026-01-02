@@ -4,9 +4,17 @@
 
 # 架構圖
 ![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/linebot/linebot.png)
-# line icon 功能
+# line Rich menu 功能
 ![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon1.jpg)
 ![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon2.jpg)
+# api 串接
+- **google api**
+![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi3.jpg)
+- **openweather api**
+![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi2.jpg)
+- **tripadvisor api**
+![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi1.jpg)
 # 生成 PDF 功能
+
 
 
