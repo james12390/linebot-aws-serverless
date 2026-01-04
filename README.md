@@ -8,8 +8,10 @@
 - [需求定義](#需求定義)
 - [架構圖](#架構圖)
 - [技術實現](#技術實現)
-- [功能展示](#功能展示)
-  -[Line icon功能]
+- [成果展示](#成果展示)
+  - [RichMenu](#RichMenu)
+  - [api串接](#api串接)
+  - [生成pdf功能](#生成pdf功能)
 
 
 ## 專案簡介
@@ -32,14 +34,25 @@
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/all/all.png width=80%>
 
 ## 技術實現
+以 **LINE Bot** 作為使用者入口，後端採 **AWS Serverless** 架構（API Gateway + Lambda）。
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/linebot/linebot.png width=80%>
 
-## 功能展示
+串接 **AWS Bedrock Agent** 與 **MCP** 功能。
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/api1.png width=80%>
+
+並使用 **DynamoDB** 作為記憶/狀態儲存，
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/db/db1.png width=80%>
+
+同時提供 **S3 產出 PDF** 等能力，並配置雲端維運監控。
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf3.png width=80%>
+
+## 成果展示
 
 
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon1.jpg width=50%>
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon2.jpg width=50%>
 
-# api 串接
+### api 串接
 - **google api**
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi3.jpg width=50%>
 
@@ -52,6 +65,7 @@
 # 生成 PDF 功能
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf1.jpg width=50%>
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf2.jpg width=50%>
+
 
 
 
