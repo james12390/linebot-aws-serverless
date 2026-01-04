@@ -5,16 +5,22 @@
 # 架構圖
 ![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/linebot/linebot.png)
 # line Rich menu 功能
-![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon1.jpg)
-![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon2.jpg)
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon1.jpg width=50%>
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon2.jpg width=50%>
+
 # api 串接
 - **google api**
-![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi3.jpg)
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi3.jpg width=50%>
+
 - **openweather api**
-![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi2.jpg)
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi2.jpg width=50%>
+
 - **tripadvisor api**
-![](https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi1.jpg)
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi1.jpg width=50%>
+
 # 生成 PDF 功能
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf1.jpg width=50%>
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf2.jpg width=50%>
 
 
 
