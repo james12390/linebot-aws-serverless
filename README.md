@@ -7,10 +7,9 @@
 - [專案簡介](#專案簡介)
 - [需求定義](#需求定義)
 - [架構圖](#架構圖)
-  - [喚醒詞偵測](#喚醒詞偵測)
-  - [Node-Red 顯示](#node-red-顯示)
-- [虛擬助理套件整合](#虛擬助理套件整合)
-- [使用方式](#使用方式)
+- [技術實現](#技術實現)
+- [功能展示](#功能展示)
+  -[Line icon功能]
 
 
 ## 專案簡介
@@ -29,10 +28,12 @@
 - **下載門檻高**：旅遊 App 往往「用完即刪」，不想學新 UI  
 - **缺乏上下文**：一般搜尋沒有記憶，使用者需反覆重打條件
 
-# 架構圖
-<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/%E5%AE%8C%E6%95%B4%E6%9E%B6%E6%A7%8B%E5%9C%96/%E5%AE%8C%E6%95%B4%E6%9E%B6%E6%A7%8B%E5%9C%96.png width=80%>
+## 架構圖
+<img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/all/all.png width=80%>
 
-# Line Rich menu 功能
+## 技術實現
+
+## 功能展示
 
 
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon1.jpg width=50%>
@@ -51,6 +52,7 @@
 # 生成 PDF 功能
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf1.jpg width=50%>
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf2.jpg width=50%>
+
 
 
 
