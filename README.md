@@ -48,11 +48,17 @@
 
 ## 成果展示
 
+### RichMenu
+點選icon AI行程規畫表 機器人會回覆提示字。
 
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon1.jpg width=50%>
+
+並依照提示字輸入地區、天數、人數，機器人回覆相關行程
+
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/lineicon/icon2.jpg width=50%>
 
 ### api 串接
+各api串接展示
 - **google api**
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi3.jpg width=50%>
 
@@ -62,9 +68,10 @@
 - **tripadvisor api**
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/api/qpi1.jpg width=50%>
 
-# 生成 PDF 功能
+### 生成 PDF 功能
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf1.jpg width=50%>
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf2.jpg width=50%>
+
 
 
 
