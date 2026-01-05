@@ -7,29 +7,31 @@ import urllib.request
 import urllib.error
 import boto3
 
-# --- 新增這段：告訴 Lambda 東京的筆記本與 AI 大腦在哪 ---
+# ==========================================
+# 1. 新增 X-Ray 追蹤初始化
+# ==========================================
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch_all
+
+# 自動補丁：這會讓 boto3 (DynamoDB, Bedrock) 和 urllib (LINE API) 的呼叫自動被紀錄
+patch_all()
+
+# --- 告訴 Lambda 東京的筆記本與 AI 大腦在哪 ---
 # 1. 取得東京區 DynamoDB 資源
 dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-1')
 table = dynamodb.Table('LineBotUserData')
 
 # 2. 取得東京區 Bedrock Agent 工具
 bedrock_agent = boto3.client(service_name='bedrock-agent-runtime', region_name='ap-northeast-1')
-# import lambda_GoogleMapsAPI
 
 # --- 環境變數設定 ---
-# 這些會從 Lambda 的「組態」->「環境變數」中讀取
 CHANNEL_SECRET = os.environ.get("CHANNEL_SECRET", "")
 ACCESS_TOKEN = os.environ.get("CHANNEL_ACCESS_TOKEN", "")
 REPLY_ENDPOINT = "https://api.line.me/v2/bot/message/reply"
 
-# --- Agent 資訊 (已幫你填好) ---
-AGENT_ID = 'GZ2Z3OQLS6'               # 你的專屬 Agent ID
-#AGENT_ALIAS_ID = 'XYSPTJ5ON1'         # 預設測試別名，如果你有自定義 Alias 請更換
-AGENT_ALIAS_ID = 'XYSPTJ5ON1'
-
-# 初始化 Bedrock Agent 用戶端
-# 根據你的截圖，我們使用的是東京區域 (ap-northeast-1)
-bedrock_agent = boto3.client(service_name='bedrock-agent-runtime', region_name='ap-northeast-1')
+# --- Agent 資訊 ---
+AGENT_ID = 'GZ2Z3OQLS6'
+AGENT_ALIAS_ID = 'RZZYF7YJI1'
 
 def _get_header(headers: dict, name: str):
     if not headers:
@@ -47,16 +49,18 @@ def verify_line_signature(raw_body_bytes: bytes, signature: str) -> bool:
     expected = base64.b64encode(mac).decode("utf-8")
     return hmac.compare_digest(expected, signature)
 
+# ==========================================
+# 2. 加入 X-Ray 裝飾器追蹤 Bedrock 呼叫耗時
+# ==========================================
+@xray_recorder.capture('get_agent_response')
 def get_agent_response(user_text: str, session_id: str):
     """呼叫 Bedrock Agent，它會幫你處理知識庫與 Flow 邏輯"""
     try:
-        # 這是呼叫秘書的關鍵動作
         response = bedrock_agent.invoke_agent(
             agentId=AGENT_ID,
             agentAliasId=AGENT_ALIAS_ID,
-            sessionId=session_id, # 使用者的 ID，讓 AI 能記得前後文
+            sessionId=session_id,
             inputText=user_text,
-            # ✨ 關鍵：在這裡設定，PDF Lambda 才拿得到 line_user_id
             sessionState={
                 'sessionAttributes': {
                     'line_user_id': session_id 
@@ -65,7 +69,6 @@ def get_agent_response(user_text: str, session_id: str):
         )
         
         full_answer = ""
-        # 這裡會接收 Agent 回傳的內容碎片並拼湊
         event_stream = response.get('completion')
         if event_stream:
             for event in event_stream:
@@ -76,8 +79,14 @@ def get_agent_response(user_text: str, session_id: str):
         
     except Exception as e:
         print(f"Agent Error: {str(e)}")
+        # 將錯誤紀錄到 X-Ray
+        xray_recorder.current_subsegment().add_exception(e)
         return f"系統忙碌中，請稍後再試"
 
+# ==========================================
+# 3. 加入 X-Ray 裝飾器追蹤 LINE 回傳耗時
+# ==========================================
+@xray_recorder.capture('reply_line')
 def reply_line(reply_token: str, text: str):
     """回傳訊息給你的 LINE Bot"""
     payload = {
@@ -101,9 +110,14 @@ def reply_line(reply_token: str, text: str):
             _ = resp.read()
     except Exception as e:
         print("Reply error:", str(e))
+        xray_recorder.current_subsegment().add_exception(e)
 
 
 SKIP_KEYWORDS = ["行程規劃使用規則", "PDF使用規則", "地點詳情查詢規則"]
+
+# ==========================================
+# 4. 主程式 Lambda Handler
+# ==========================================
 def lambda_handler(event, context):
     body_str = event.get("body") or ""
     is_b64 = bool(event.get("isBase64Encoded"))
@@ -122,25 +136,27 @@ def lambda_handler(event, context):
 
     payload = json.loads(raw_body_bytes.decode("utf-8"))
     events = payload.get("events", [])
-    #頭2025/12/31新增
-    #尾2025/12/31新增
+    
     reply = "收到了！但我不太確定您的意思。如果是要規劃行程，請依照格式輸入：\n地區：\n天數：\n人數："
+    
     for e in events:
         if e.get("type") == "message" and (e.get("message") or {}).get("type") == "text":
             reply_token = e.get("replyToken")
             user_text = e["message"]["text"]
-            # 用使用者的 userId 當對話 Session，這樣 AI 才會記得他是誰
             user_id = e["source"].get("userId", "default-user")
+            
             if user_text in SKIP_KEYWORDS:
-              if user_text == "行程規劃使用規則":
-                reply = "請依照格式輸入：\n地區：\n天數：\n人數："
-              elif user_text == "PDF使用規則":
-                reply = "請先確認行程草案，確認完請說:生成PDF"
-              elif user_text == "地點詳情查詢規則":
-                reply = "請依照格式輸入：\n地點+詳細資訊\n例:台北車站詳細資訊"
-              return reply_line(reply_token,reply)
+                if user_text == "行程規劃使用規則":
+                    reply = "請依照格式輸入：\n地區：\n天數：\n人數：\n旅遊風格：\n美食與購物偏好：\n預算範圍\n出發日期\n旅行風格請依照(1)傳統文化（寺廟、神社）(2)現代都市（逛街、美食）(3)自然風景(4)混合型\n美食與購物偏好請依照(1)高級餐廳/米其林(2)大眾美食/街頭小食(3)逛百貨/購物商圈(4)夜生活/酒吧\n以上兩項填數字就行"
+                elif user_text == "為您生成PDF中請稍等":
+                    user_text == "生成PDF"
+                    reply = get_agent_response(user_text, user_id)
+                elif user_text == "地點詳情查詢規則":
+                    reply = "請輸入 「地點 + 詳細資訊」\n例如：台北車站 詳細資訊\n（請勿只輸入地點）"
+                return reply_line(reply_token, reply)
 
             elif reply_token:
+                # 這裡會進入 get_agent_response 的 X-Ray 區塊
                 ai_response = get_agent_response(user_text, user_id)
                 reply_line(reply_token, ai_response)
 
