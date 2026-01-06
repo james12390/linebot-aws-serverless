@@ -29,7 +29,7 @@
 - **資訊過載與決策癱瘓**：大量過時文章與農場內容難以辨識真偽  
 - **下載門檻高**：旅遊 App 往往「用完即刪」，不想學新 UI  
 - **缺乏上下文**：一般搜尋沒有記憶，使用者需反覆重打條件
-
+- **AI資料真實性**：一般AI可能會給過時或虛假的訊息
 ## 架構圖
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/all/all.png width=80%>
 
@@ -71,6 +71,7 @@
 ### 生成 PDF 功能
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf1.jpg width=50%>
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf2.jpg width=50%>
+
 
 
 
