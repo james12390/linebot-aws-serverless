@@ -23,7 +23,7 @@
 - 將權威美食資料與 Google Maps 即時資訊匯流到單一對話框，降低多視窗焦慮
 
 ## 需求定義
-在日本自由行的旅途中，使用者常需要同時操作地圖、交通、部落格、美食、天氣等多個應用程式，資訊彼此斷裂，造成大量「複製、切換、貼上」的操作摩擦（Context Switching Cost），讓旅人陷入數位焦慮。  
+在日本自由行的旅途中，使用者常需要同時操作地圖、交通、部落格、美食、天氣等多個應用程式，資訊彼此斷裂，造成大量「複製、切換、貼上」的操作摩擦，讓旅人陷入數位焦慮。  
 主要痛點包含：
 - **App 切換疲勞**：地圖/翻譯/匯率/筆記/天氣等多 App 同時操作，繁瑣且耗效能  
 - **資訊過載與決策癱瘓**：大量過時文章與農場內容難以辨識真偽  
@@ -71,6 +71,7 @@
 ### 生成 PDF 功能
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf1.jpg width=50%>
 <img src=https://github.com/james12390/linebot-aws-serverless/blob/master/image/pdf/pdf2.jpg width=50%>
+
 
 
 
